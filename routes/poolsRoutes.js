@@ -17,7 +17,7 @@ module.exports = function(app){
   app.get('/poolsByTechnology/:technology', async (req,res) =>{
     try{
       await auth.token(req)
-      var pools = await controllerPools.poolsBytechnology(req.params.tecnology);
+      var pools = await controllerPools.poolsBytechnology(req.params.technology);
       return pools;
     }catch{
       res.send(responses.invalid());
@@ -32,10 +32,10 @@ module.exports = function(app){
       res.send(responses.invalid());
     }
   });
-  app.get('/poolsByTwo/:name/:tecnology', async(req,res)=>{
+  app.get('/poolsByTwo/:name/:technology', async(req,res)=>{
     try{
       await auth.token(req)
-      var pool = await controllerPools.poolTwoParams(req.params.name,req.params.tecnology);
+      var pool = await controllerPools.poolTwoParams(req.params.name,req.params.technology);
       return pool;
     }catch{
        res.send(responses.invalid());
