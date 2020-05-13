@@ -1,0 +1,40 @@
+SyntaxError: Unexpected token ' in JSON at position 3
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\types\json.js:89:19)
+    at C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\read.js:121:18
+    at invokeCallback (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:224:16)
+    at done (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:213:7)
+    at IncomingMessage.onEnd (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:273:7)
+    at IncomingMessage.emit (events.js:215:7)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+SyntaxError: Unexpected token ' in JSON at position 3
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\types\json.js:89:19)
+    at C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\read.js:121:18
+    at invokeCallback (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:224:16)
+    at done (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:213:7)
+    at IncomingMessage.onEnd (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:273:7)
+    at IncomingMessage.emit (events.js:215:7)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+SyntaxError: Unexpected string in JSON at position 18
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\types\json.js:89:19)
+    at C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\read.js:121:18
+    at invokeCallback (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:224:16)
+    at done (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:213:7)
+    at IncomingMessage.onEnd (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:273:7)
+    at IncomingMessage.emit (events.js:215:7)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)
+SyntaxError: Unexpected string in JSON at position 18
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\types\json.js:89:19)
+    at C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\body-parser\lib\read.js:121:18
+    at invokeCallback (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:224:16)
+    at done (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:213:7)
+    at IncomingMessage.onEnd (C:\Users\eleaz\Desktop\InterviewAPI\MI_API\node_modules\raw-body\index.js:273:7)
+    at IncomingMessage.emit (events.js:215:7)
+    at endReadableNT (_stream_readable.js:1183:12)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21)

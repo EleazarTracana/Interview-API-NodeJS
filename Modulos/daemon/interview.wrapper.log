@@ -1,0 +1,18 @@
+2020-05-11 21:35:33 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\eleaz\AppData\Roaming\npm\node_modules\node-windows\lib\wrapper.js --file C:\Users\eleaz\Desktop\InterviewAPI\MI_API\Modulos\server.js --scriptoptions= --log "Interview wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-11 21:35:33 - Started 14900
+2020-05-12 05:28:57 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\eleaz\AppData\Roaming\npm\node_modules\node-windows\lib\wrapper.js --file C:\Users\eleaz\Desktop\InterviewAPI\MI_API\Modulos\server.js --scriptoptions= --log "Interview wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-12 05:28:57 - Started 5968
+2020-05-12 06:24:21 - Stopping interview.exe
+2020-05-12 06:24:21 - ProcessKill 5968
+2020-05-12 06:24:22 - Found child process: 6000 Name: conhost.exe
+2020-05-12 06:24:22 - Found child process: 6640 Name: node.exe
+2020-05-12 06:24:23 - Stopping process 6000
+2020-05-12 06:24:23 - Send SIGINT 6000
+2020-05-12 06:24:23 - SIGINT to 6000 failed - Killing as fallback
+2020-05-12 06:24:23 - Stopping process 6640
+2020-05-12 06:24:23 - Send SIGINT 6640
+2020-05-12 06:24:23 - SIGINT to 6640 failed - Killing as fallback
+2020-05-12 06:24:23 - Stopping process 5968
+2020-05-12 06:24:23 - Send SIGINT 5968
+2020-05-12 06:24:23 - SIGINT to 5968 failed - Killing as fallback
+2020-05-12 06:24:23 - Finished interview.exe
