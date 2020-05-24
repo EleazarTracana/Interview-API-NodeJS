@@ -48,7 +48,6 @@ module.exports = {
       }
       if (token) {
        resultado = await jwt.verify(token, config.secret)
-       console.log("token verificado:" + resultado)
        return resultado;
       }
     }catch (e){

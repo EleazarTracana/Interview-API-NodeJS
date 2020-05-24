@@ -1,13 +1,18 @@
-var Service = require('node-windows').Service;
+var service = require('node-windows').Service;
 
-var svc = new Service({
-  name:'Interview',
-  description: 'RESTFULL API',
-  script: 'C:\\Users\\eleaz\\Desktop\\InterviewAPI\\MI_API\\Modulos\\server.js'
-});
+try{
+  var svc = new service({
+    name:'Interview',
+    description: 'RESTFULL API',
+    script: 'C:\\INTERVIEWAPI\\Modulos\\server.js'
+  });
+  
+  svc.on('install',function(){
+    svc.start();
+  });
+  
+  svc.install();
 
-svc.on('install',function(){
-  svc.start();
-});
-
-svc.install();
+}catch( e){
+console.log(e)
+}

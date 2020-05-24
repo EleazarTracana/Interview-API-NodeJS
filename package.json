@@ -1,7 +1,7 @@
 {
-  "name": "projecto-tp2",
+  "name": "colloquium",
   "version": "1.0.0",
-  "description": "proyecto de construir una api en nodejs",
+  "description": "API for Mongodb",
   "main": "Index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +14,8 @@
     "commonjs-utils": "^0.1.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.3.4"
+    "mongodb": "^3.3.4",
+    "node-windows": "^1.0.0-beta.1",
+    "winser": "^1.0.3"
   }
 }

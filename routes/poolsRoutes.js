@@ -14,32 +14,32 @@ module.exports = function(app){
       res.send(responses.invalid());
     }
   });
-  app.get('/poolsByTechnology/:technology', async (req,res) =>{
+  app.get('/pools', async (req,res) =>{
     try{
-      await auth.token(req)
-      var pools = await controllerPools.poolsBytechnology(req.params.technology);
-      return pools;
-    }catch{
-      res.send(responses.invalid());
-    }
-  });
-  app.get('/poolsByName/:name', async (req,res) =>{
-    try{
-      await auth.token(req)
-      var pools = await controllerPools.poolByName(req.params.name);
-      return pools;
-    }catch{
-      res.send(responses.invalid());
-    }
-  });
-  app.get('/poolsByTwo/:name/:technology', async(req,res)=>{
-    try{
-      await auth.token(req)
-      var pool = await controllerPools.poolTwoParams(req.params.name,req.params.technology);
-      return pool;
-    }catch{
-       res.send(responses.invalid());
-    }
-  })
 
+      await auth.token(req)
+      var tech = req.query.technology,
+      name = req.query.name,
+      pools,
+      array = [];
+
+      if(tech != null && name != null){
+        pools = await controllerPools.poolTwoParams(name,tech);
+      }else if(tech != null && name == null){
+        pools = await controllerPools.poolsBytechnology(tech);
+      }else if(tech == null && name !=null){
+        pools = await controllerPools.poolByName(name);
+      }else{
+        pools = await controllerPools.poolsAll();
+      }
+      if(pools instanceof Array){
+        res.status(200).send(pools)
+      }else{
+        array.push(pools)
+        res.send(array);
+      }
+    }catch{
+      res.status(403).send(responses.invalid());
+    }
+  });
 }

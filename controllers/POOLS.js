@@ -8,10 +8,15 @@ module.exports = {
       pools.forEach(pool => {list.push(pool.technology)});
       return  list;
    },
+   poolsAll:async function search(name){
+      var CollectionPools = await client.tecnologies();
+      var pools = await CollectionPools.find({}).toArray();
+      return pools;
+   },
    poolByName: async function search(name){
       var CollectionPools = await client.tecnologies();
-      var pool = await CollectionPools.findOne({'name':name});
-      return pool;
+      var pools = await CollectionPools.find({'name':name}).toArray();
+      return pools;
    },
    poolsBytechnology: async function search(technology){
       var CollectionPools = await client.tecnologies();

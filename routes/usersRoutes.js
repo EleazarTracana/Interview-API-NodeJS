@@ -23,7 +23,6 @@ module.exports = function(app){
            }else{
             res.send(user);
            }
-         res.send(user); 
       }catch (e){
         res.send(JSON.stringify(responses.invalid().toString()));
        }
