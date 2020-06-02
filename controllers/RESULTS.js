@@ -1,13 +1,13 @@
 var client = require('../base_de_datos/Cliente'),
     candidate_functions = require('../controllers/CANDIDATES'),
-    factory             = require('../Modulos/models')
+    results             = require('../Modulos/models').results
 
 module.exports= {
     create_default_results: async (dni,technology) => {
         var results_db = await client.results(),
             next_pk = await client.getNextSequence("resultsid"),
             empty_array = [],
-            candidate_results = factory.Results(dni,technology,empty_array,next_pk);
+            candidate_results = new results(dni,technology,empty_array,next_pk);
             
         let callback =  await results_db.insertOne(candidate_results);
         return callback;

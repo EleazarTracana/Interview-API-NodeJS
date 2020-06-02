@@ -12,6 +12,7 @@ module.exports = function(app){
           var users = await controllerUsers.searchAll()
           res.send(users);
       }catch (e){
+         console.log(e)
         res.send(responses.invalid);
       }
     });
@@ -33,15 +34,16 @@ module.exports = function(app){
        await auth.token(req)
        var result_callback;
        var candidate = await controllerUsers.searchOne(req.body._id)
-       if(!candidate){
+       if(candidate == null){
              await controllerUsers.addCandidate(req.body)
-             await controllerResult.create_default_results(req.body._id,req.body.technolgy);
+             await controllerResult.create_default_results(req.body._id,req.body.tecnology);
              result_callback = responses.candidateAdded;
        }else{
-          result = responses.candidateExist;  
+         result_callback = responses.candidateExist;  
        }
-       res.send(result);
-    }catch{
+       res.send(result_callback);
+    }catch(e){
+       console.log(e)
       res.status(403).send(responses.invalid);
      }
    });
