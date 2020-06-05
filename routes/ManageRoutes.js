@@ -12,11 +12,9 @@ module.exports = function(app){
   app.get('/param',async (req,res) => {
      try{ 
        await auth.token(req);
-       console.log(req.query.name);
-       var params = param.GetParamsByName(req.query.name);
-       res.send(params);
+       var params = await param.GetAll();
+       res.status(200).send(params);
       }catch(e){
-        console.log(e);
         res.send(constantes.invalid);
       }
     });
