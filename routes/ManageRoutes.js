@@ -24,7 +24,6 @@ module.exports = function(app){
         var newtoken = await auth.verifyTokenUser(req.body.user,req.body.token);
         res.send(newtoken);
        }catch(e){
-         console.log(e);
          res.send(constantes.invalid);
        }
      }),
@@ -40,7 +39,6 @@ module.exports = function(app){
         }
         res.json(json);
        }catch(e){
-         console.log(e);
          res.send(constantes.invalid);
        }
      });
