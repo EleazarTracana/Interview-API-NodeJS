@@ -38,14 +38,8 @@ module.exports = {
      },
      all_permissions: async function(){
         var permissions_db  = await client.permisos(),
-            all_permissions = await permissions_db.find({}).toArray(),
-            names           = [];
-
-            all_permissions.forEach(permiso => {
-                names.push(permiso.name);
-            });
-
-            return names;
+            all_permissions = await permissions_db.find({}).toArray();
+            return all_permissions;
      },
      sendEmail_credentials: async (email_receiver,username,password) =>{
 
