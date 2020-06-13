@@ -14,6 +14,15 @@ module.exports = function(app){
       res.send(responses.invalid);
     }
   });
+  app.get('/pools/addQuestion',async (req,res) => {
+    try{
+        await auth.token(req);
+        var pools = await controllerPools.poolAddQuestion(req.body.poolId, req.body.question);
+        res.send(pools);
+    }catch{
+      res.send(responses.invalid);
+    }
+  });
   app.get('/pools', async (req,res) =>{
     try{
 

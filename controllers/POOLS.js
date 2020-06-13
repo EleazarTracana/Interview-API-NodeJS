@@ -33,5 +33,12 @@ module.exports = {
       var CollectionPools = await client.tecnologies();
       var pool = await CollectionPools.findOne({"technology":technology, "name":poolname});
       return pool;
+   },
+   poolAddQuestion: async function search(poolId, question) {
+      var CollectionPools = await client.tecnologies();
+      var pools = await CollectionPools.findOne({'_id':poolId});
+      pools.questions.push(question);
+      return await CollectionPools.updateOne({_id:poolId},
+         {$set: {questions: pools.questions}});
    }
 }
