@@ -5,7 +5,7 @@ const auth               = require('../base_de_datos/Autenticar');
  
 module.exports = function(app){
     
-  app.get('/tecnologies/dropdown',async (req,res) => {
+  app.get('/technologies/dropdown',async (req,res) => {
     try{
         await auth.token(req)
         var tecnologies = await controllerPools.technologies_dropdown_list()

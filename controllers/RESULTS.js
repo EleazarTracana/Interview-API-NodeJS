@@ -1,6 +1,6 @@
 var client = require('../base_de_datos/Cliente'),
     candidate_functions = require('../controllers/CANDIDATES'),
-    results             = require('../Modulos/models').results
+    results             = require('../Modulos/models').results;
 
 module.exports= {
     create_default_results: async (dni,technology) => {
@@ -11,37 +11,53 @@ module.exports= {
             
         let callback =  await results_db.insertOne(candidate_results);
         return callback;
+    },
+    update_candidate_results: async(candidate,question,poolid) => {
+      if(question._id == -1){
+       var  empty_question = {
+          description: 'se han acabado las preguntas de la pool',
+          score: 0,
+          difficulty: 0,
+          _id: -1
+        }
+        return empty_question;
+      }
+      var results_db = await client.results(),
+          pool_db    = await client.tecnologies(),
+          pool       = await pool_db.findOne({_id:poolid}),
+          results_cd = await results_db.findOne({candidate_id: candidate._id });
+          results_cd.results.push(question);
+          await results_db.updateOne({candidate_id:candidate._id},{results: results_cd});
+
+      var next_question  = await get_next_question(pool,results_cd);
+      return next_question;
     }
-}
-
-/*faltaria el metodo que actualiza el resultado del usuario y probar y modificar
-el metodo gext_next_question a tu gusto*/
-
-async function get_next_question(dni_user,pool_id){  
-
-    var candidate_db = await client.candidates(),
-        pool_db   = await client.tecnologies(),
-        candidate = await candidate_db.findOne({dni:dni_user}),
-        pool      = await pool_db.findOne({_id:pool_id}),
-        candidate_questions = candidate.results,
-        pool_questions = pool.questions,
+  }
+async function get_next_question(pool,resultado){  
         current_sum_candidate = 0,
-        current_length_candidate = candidate_questions.length;
+        current_length_candidate = resultado.questions.length;
 
-        candidate_questions.forEach(question => {current_sum_candidate += question.score})
+        resultado.forEach(question => {current_sum_candidate += question.score})
         var current_value = Math.round(current_sum_candidate/current_length_candidate),
-            filtered_questions = pool_questions.filter(e => !candidate_questions.includes(e)),
+            filtered_questions = pool.questions.filter(e => !resultado.questions.includes(e)),
             next_difficulty = GetNextDifficulty(current_value);
 
         var next_question = filtered_questions.find(e => e.difficulty == next_difficulty);
         if(next_question == null){
-           //implementar logica si no hay mas preguntas con esa dificultad
+          next_question =  filtered_questions[0];
+          if(next_question == null){
+            next_question = {
+              description: 'se han acabado las preguntas de la pool',
+              score: 0,
+              difficulty: 0,
+              _id: -1
+            }
+          }
         }
-
         return next_question;
-
 };
 var GetNextDifficulty = (total) =>{
+  console.log('total: ' + total);
     var next_value = 1;
     const highest_score = 5,
           highest_medium_score = 4,
@@ -49,7 +65,6 @@ var GetNextDifficulty = (total) =>{
           medium_slow_score =2,
           slow_score = 1;
           
-          //lo hice de ejemplo mat pero a es a tu gusto
           if(total == highest_score){
             next_value = highest_score
           }else if(total == highest_medium_score) {
@@ -59,5 +74,6 @@ var GetNextDifficulty = (total) =>{
           }else if(total == medium_slow_score){
             next_value  = slow_score;
           }
+          console.log('next_value: ' + total);
     return next_value;
 }
