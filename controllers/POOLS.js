@@ -10,8 +10,7 @@ module.exports = {
 
       let uniqueArray = list.filter(function(elem, pos) {
          return list.indexOf(elem) == pos;
-     })
-     uniqueArray.push("otra");
+     });
    return uniqueArray;
    },
    poolsAll:async function search(name){
