@@ -1,5 +1,5 @@
 //Librerias 
-const controllerUsers    = require('../controllers/CANDIDATES');
+const controller_users    = require('../controllers/CANDIDATES');
 const controllerResult   = require('../controllers/RESULTS');
 const responses          = require('../Modulos/constantes');
 const auth               = require('../base_de_datos/Autenticar');
@@ -9,7 +9,7 @@ module.exports = function(app){
   app.get('/allCandidates',async (req,res) => {
       try{
           await auth.token(req)
-          var users = await controllerUsers.searchAll()
+          var users = await controller_users.searchAll()
           res.send(users);
       }catch (e){
         res.send(responses.invalid);
@@ -18,7 +18,7 @@ module.exports = function(app){
    app.get('/searchCandidate', async (req,res) =>{
       try{
          await auth.token(req)
-         var user = await controllerUsers.searchOne(req.query.id)
+         var user = await controller_users.searchOne(req.query.id)
          if(!user){
           res.send(responses.candidateNoFound)
          }else{
@@ -32,9 +32,9 @@ module.exports = function(app){
     try{
        await auth.token(req)
        var result_callback;
-       var candidate = await controllerUsers.searchOne(req.body._id)
+       var candidate = await controller_users.searchOne(req.body._id)
        if(!candidate){
-             await controllerUsers.addCandidate(req.body)
+             await controller_users.addCandidate(req.body)
              await controllerResult.create_default_results(req.body._id,req.body.technology);
              result_callback = responses.candidateAdded;
        }else{
@@ -45,11 +45,18 @@ module.exports = function(app){
       res.status(403).send(responses.invalid);
      }
    });
+   app.post("/candidate/edit",async(req,res)=>{
+      try{
+         await auth.token(req);
+         var result = controller_users.updateCandidate(req.body.candidate);
+         res.status(200).send(responses.candidate_edited);
+      }catch(e){
+         res.status(403).send(responses.invalid)
+      }
+   });
    app.post('/candidate/next_question',async(req,res)=>{
       try{
          await auth.token(req)
-         console.log('body' + req.body)
-
          var candidate = JSON.parse(req.body.candidate),
              question  = JSON.parse(req.body.question),
              pool_id   = req.body.pool_id,
@@ -65,30 +72,15 @@ module.exports = function(app){
     try{
       await auth.token(req)
       var result;
-      var user = await controllerUsers.searchOne(req.body.id)
+      var user = await controller_users.searchOne(req.body.id)
       if(user){
-         result = await controllerUsers.deleteCandidate(req.body.id);
+         result = await controller_users.deleteCandidate(req.body.id);
       }else{
          result = responses.candidateNoFound;  
       }
       res.send(result);
    }catch{
       res.status(403).send(responses.invalid);
-    }
-   });
-   app.post('/updateCandidate',async(req, res) =>{
-    try{
-      await auth.token(req)
-      var result;
-      var user = await controllerUsers.searchOne(req.body.id)
-      if(user){
-         result = await controllerUsers.updateCandidate(req.body);
-      }else{
-         result = responses.candidateNoFound;  
-      }
-      res.send(result);
-    }catch{
-     res.status(403).send(responses.invalid);
     }
    });
    app.post('/updateResults',async(req, res) =>{

@@ -7,10 +7,10 @@ module.exports = {
           technologies = await client.tecnologies(),
           pools       = await technologies.find({}).toArray();
       pools.forEach(pool => {list.push(pool.technology)});
-
       let uniqueArray = list.filter(function(elem, pos) {
          return list.indexOf(elem) == pos;
      });
+     uniqueArray.unshift("seleccionar tecnologia");
    return uniqueArray;
    },
    poolsAll:async function search(name){

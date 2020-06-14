@@ -30,10 +30,10 @@ module.exports = {
     },
     updateCandidate: async function Update(candidate){
         var candidates = await client.candidates();
-        var resultado           = await candidates.update(
+        var resultado           = await candidates.updateOne(
             { _id: candidate.id },
-            { $set: candidate },
-        )
+            { $set: candidate }
+        );
         return resultado;
     },
     InsertLinks: function insert(usuario){
