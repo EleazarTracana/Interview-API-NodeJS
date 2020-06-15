@@ -6,12 +6,19 @@ module.exports = {
       var list = [],
           technologies = await client.tecnologies(),
           pools       = await technologies.find({}).toArray();
+      list.push("seleccionar tecnologia");
       pools.forEach(pool => {list.push(pool.technology)});
       let uniqueArray = list.filter(function(elem, pos) {
          return list.indexOf(elem) == pos;
      });
-     uniqueArray.unshift("seleccionar tecnologia");
    return uniqueArray;
+   },
+   pool_add: async (pool) => {
+      var collection = await client.tecnologies();
+         let next_pk = await client.getNextSequence("poolid");
+         pool._id = next_pk;
+         let response =  await collection.insertOne(pool);
+      return response;
    },
    poolsAll:async function search(name){
       var CollectionPools = await client.tecnologies();

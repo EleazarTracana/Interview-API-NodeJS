@@ -68,9 +68,11 @@ module.exports = {
             max = key.parameter_value.max_difficulty,
             array = [];
 
+            array.push("seleccionar dificultad");
             for(min ; min <= max; min++)
-                array.push(min);
+                array.push(min.toString());
 
+            
          return array;       
      }
     
