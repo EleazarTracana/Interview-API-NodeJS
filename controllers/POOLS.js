@@ -36,9 +36,25 @@ module.exports = {
    },
    poolAddQuestion: async function search(poolId, question) {
       var CollectionPools = await client.tecnologies();
-      var pools = await CollectionPools.findOne({'_id':poolId});
-      pools.questions.push(question);
+      var pool = await CollectionPools.findOne({'_id':poolId});
+      pool.questions.push(question);
       return await CollectionPools.updateOne({_id:poolId},
-         {$set: {questions: pools.questions}});
+         {$set: {questions: pool.questions}});
+   },
+   poolDeleteQuestion: async function search(poolId, questionId) {
+      var CollectionPools = await client.tecnologies();
+      var pool = await CollectionPools.findOne({'_id':poolId});
+      pool.questions.splice(pool.questions.findIndex(q => q._id === questionId), 1);
+      //return pool.questions;
+      return await CollectionPools.updateOne({'_id':poolId},
+         {$set: {questions: pool.questions}});
+   },
+   poolUpdateQuestion: async function search(poolId, question) {
+      var CollectionPools = await client.tecnologies();
+      var pool = await CollectionPools.findOne({'_id':poolId});
+      pool.questions.splice(pool.questions.findIndex(q => q._id === question._id), 1);
+      pool.questions.push(question);
+      return await CollectionPools.updateOne({'_id':poolId},
+         {$set: {questions: pool.questions}});
    }
 }
