@@ -14,6 +14,8 @@ module.exports = {
     userNotFound:     new message(true, "404", 'Usuario no encontrado'),
     incorrect:        new message(true, "403", 'Usuario/Contrasena Invalida'),
     add_question_result: new message(false,"200","la pregunta se ha dado de alta exitosamente"),
+    pool_added: new message(false,"200","la pool se ha dado de alta exitosamente"),
+    pool_founded: new message(true,"200","la pool no pudo darse de alta, ya existe"),
     downgrade_impossible: "el desempeño del candidato es muy bajo",
     upgrade_impossible: "el desempeño del candidato es muy bueno",
     junior: "JUNIOR",

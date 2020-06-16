@@ -2,6 +2,7 @@ const controller_pools   = require('../controllers/POOLS');
 const controller_params  = require('../controllers/MANAGE');
 const responses          = require('../Modulos/constantes');
 const auth               = require('../base_de_datos/Autenticar');
+const { response } = require('express');
  
 module.exports = function(app){
     
@@ -26,7 +27,12 @@ module.exports = function(app){
   app.post('/pools/add', async(req,res)=>{
     try{
       await auth.token(req);
-      var result = controller_pools.pool_add(req.body);
+      let found  = await controller_pools.poolTwoParams(req.body.name,req.body.technology),
+          result = responses.pool_added;
+      if(!found)
+        await controller_pools.pool_add(req.body);
+      else
+        result  = responses.pool_founded;
       res.send(result);
     }catch(e){
       res.send(responses.invalid);

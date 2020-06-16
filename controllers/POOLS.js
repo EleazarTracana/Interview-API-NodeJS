@@ -16,6 +16,7 @@ module.exports = {
    pool_add: async (pool) => {
       var collection = await client.tecnologies();
          let next_pk = await client.getNextSequence("poolid");
+         pool.questions = [];
          pool._id = next_pk;
          let response =  await collection.insertOne(pool);
       return response;
