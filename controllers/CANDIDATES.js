@@ -34,6 +34,10 @@ module.exports = {
     },
     addCandidate: async function add(candidate){
         var candidates = await client.candidates();
+
+        delete candidate.finished;
+        delete candidate.pending;
+
         var resultado  = await candidates.insertOne(candidate);
         return resultado;
     },

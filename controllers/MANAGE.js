@@ -10,6 +10,17 @@ function read_html_credentials(username,password){
 
         return credentials;
 }
+function read_html_results(model){
+    var results =  fs.readFileSync('C:/InterviewAPI/templates/resultados.html', 'utf8'),
+        results =  results.replace("PH_TECHNOLOGY",model.technology)
+                          .replace("PH_NAME_POOL",model.pool)
+                          .replace("PH_INTERVIEWER",model.interviewer)
+                          .replace("PH_DESEMP",model.rating)
+                          .replace("PH_SCORE",model.final_score);
+        
+        return results;
+
+}
 async function create_email() {
    var params = await client.params();
        _email    = await params.findOne({ parameter_name: "EMAIL_ACCOUNT"}),
@@ -54,6 +65,19 @@ module.exports = {
                  html: body, 
           });
           return info;
+     },
+     sendEmail__results: async(email_receiver,result_model) => {
+        var transporter = await create_email(),
+            params      = await client.params(),
+            _email      = await params.findOne({ parameter_name: "EMAIL_ACCOUNT"}),
+            body        =  read_html_results(username,password),
+            info      = await transporter.sendMail({
+                from: _email.parameter_value,
+                to: email_receiver , 
+                subject: "Resultado Entrevista", 
+                html: body, 
+         });
+         return info;
      },
      google_places_key: async() =>{
          var params = await client.params(),

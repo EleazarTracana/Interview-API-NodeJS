@@ -53,13 +53,15 @@ module.exports = function(app){
          res.status(403).send(responses.invalid)
       }
    });
+
    app.post('/candidate/next_question',async(req,res)=>{
       try{
          await auth.token(req)
          var candidate = JSON.parse(req.body.candidate),
-             question  = JSON.parse(req.body.question),
+             question  = (req.body.question != null) ? JSON.parse(req.body.question) : null,
              pool_id   = req.body.pool_id,
-             result  =  await controllerResult.update_candidate_results(candidate,question,pool_id);
+             continuar = req.body.continuar,
+             result  =  await controllerResult.Interview(candidate,question,pool_id,continuar);
          
          res.status(200).send(result)
       }catch(e){

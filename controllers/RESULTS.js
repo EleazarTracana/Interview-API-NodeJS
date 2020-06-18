@@ -1,5 +1,5 @@
 var client = require('../base_de_datos/Cliente'),
-    candidate_functions = require('../controllers/CANDIDATES'),
+    manage = require('../controllers/MANAGE'),
     results             = require('../Modulos/models').results,
     Interview           = require('../Modulos/models').Interview,
     enums               = require('../Modulos/constantes');
@@ -15,19 +15,52 @@ module.exports = {
         let callback =  await results_db.insertOne(candidate_results);
         return callback;
     },
-    update_candidate_results: async(candidate,question,poolid) => {
+    Interview: async(candidate,question,poolid,continuar) => {
       var results_db = await client.results(),
           pool_db    = await client.tecnologies(),
-          pool       = await pool_db.findOne({_id:poolid}),
-          results_cd = await results_db.findOne({"candidate_id": candidate._id });
+          results_cd = await results_db.findOne({"candidate_id": candidate._id }),
+          pool;
+
+          if(!continuar)
+               pool = await pool_db.findOne({_id:poolid});
+           else
+               pool = await pool_db.findOne({name: results_cd.seniority, technology: candidate.technology});
+
+        if(results_cd.results.length == 0){
+          await results_db.updateOne({candidate_id:candidate._id},
+            {$set: {seniority: pool.name}});
+        }
+        if(!continuar){
           results_cd.results.push(question);
           await results_db.updateOne({candidate_id:candidate._id},
               {$set: {results: results_cd.results}});
+          }
 
       var next_question  = await get_next_question(pool,pool_db,results_cd.results);
       return next_question;
     }
   }
+async function finish_interview(DNI,candidate_db,results_db,pool_name,name_interv){
+      var candidate  =  await candidate_db.findOne({_id:DNI}),
+          cand_result = await results_db.findOne({ "candidate_id" : DNI });
+            await results_db.updateOne({ "candidate_id" : DNI },{$set: {finished: true}});
+
+            var full_score     = 0,
+                question_count = cand_result.results.length;
+                tech     = candidate.technology;
+            cand_result.results.forEach(question => {full_score += question.score});
+
+            var count_total  = (question_count*5),
+                count_result = count_total.toString()+"/"+full_score.toString();
+
+            var model_mail = {
+              technology: tech,
+              pool: pool_name,
+              final_score: count_result,
+              interviewer: name_interv
+            }  
+       return await manage.sendEmail__results(candidate.email,model_mail);
+}
 async function get_next_question(pool,pool_db,resultado){  
        var current_sum_candidate = 0,
            current_length_candidate = resultado.length,
@@ -87,8 +120,9 @@ async function get_next_question(pool,pool_db,resultado){
 
         var next_question = filtered_questions.find(e => e.difficulty == next_difficulty);
         if(next_question == null){
-          next_question =  filtered_questions[0];
-          if(next_question == null){
+          if(filtered_questions.length > 0){
+            next_question = filtered_questions[0];
+          }else{
             next_question = {
               description: 'se han acabado las preguntas de la pool',
               score: 0,
