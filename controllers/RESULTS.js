@@ -10,6 +10,7 @@ module.exports = {
             next_pk = await client.getNextSequence("resultsid"),
             empty_array = [],
             candidate_results = new results(dni,technology,empty_array,next_pk);
+            candidate_results.finished = false;
             
         let callback =  await results_db.insertOne(candidate_results);
         return callback;

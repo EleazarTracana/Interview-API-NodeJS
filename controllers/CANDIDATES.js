@@ -1,5 +1,4 @@
-var client = require('../base_de_datos/Cliente'),
-    lambda = require('lodash');
+var client = require('../base_de_datos/Cliente');
 const linkedinUriBase = "https://www.linkedin.com/in/"
 const githubUriBase = "https://github.com/";
 
@@ -15,22 +14,20 @@ module.exports = {
         var candidates_db = await client.candidates(),
             results_db    = await client.results(),
             candidates    = await candidates_db.find({}).toArray(),
-            results       = await results_db.find({}).toArray();
-        
-        if(candidates != null)
+            results_all   =  await results_db.find({}).toArray();
             candidates.forEach(value => this.InsertLinks(value));
 
-        for(var cand in candidates){
-            result_cand = results.find( x => x.candidate_id == cand._id);
-            if(result_cand.finished){
-                cand.finished = true;
-                cand.pending  = false;
-            }else if(result_cand.results > 0 && !result_cand.finished){
-                cand.finished = false;
-                cand.pending  = true;
-            }else if(result_cand.results == 0 && !result_cand.finished){
-                cand.finished = false;
-                cand.pending  = false;
+        for(var i = 0; i < candidates.length; i++){
+            var result_cand = results_all.find(x => x.candidate_id == candidates[i]._id);
+            if(result_cand.finished == true){
+                candidates[i].finished = true;
+                candidates[i].pending  = false;
+            }else if(result_cand.results.length > 0 && result_cand.finished == false){
+                candidates[i].finished = false;
+                candidates[i].pending  = true;
+            }else if(result_cand.results.length == 0 && result_cand.finished == false){
+                candidates[i].finished = false;
+                candidates[i].pending  = false;
             }
         }
         return candidates;
