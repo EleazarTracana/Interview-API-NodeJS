@@ -1,10 +1,12 @@
-const controller_pools   = require('../controllers/POOLS');
-const controller_params  = require('../controllers/MANAGE');
-const responses          = require('../Modulos/constantes');
-const auth               = require('../base_de_datos/Autenticar');
-const { response } = require('express');
+
+const responses          = require('../Modulos/constantes'),
+      auth               = require('../base_de_datos/Autenticar');
+
  
-module.exports = function(app){
+module.exports = function(app,db){
+
+  const controller_pools   = require('../controllers/POOLS')(db),
+        controller_params  = require('../controllers/MANAGE')(db);
     
   app.get('/technologies/dropdown',async (req,res) => {
     try{

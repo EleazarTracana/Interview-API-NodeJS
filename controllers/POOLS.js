@@ -1,10 +1,10 @@
-var client = require('../base_de_datos/Cliente')
-var userController = require('../controllers/USERS')
+module.exports = (db) => {
+   var client = require('../base_de_datos/Cliente')(db),
+      module = {};
 
-module.exports = {
-   technologies_dropdown_list: async function search() {
+   module.technologies_dropdown_list = async () => {
       var list = [],
-          technologies = await client.tecnologies(),
+          technologies = client.tecnologies(),
           pools       = await technologies.find({}).toArray();
       list.push("seleccionar tecnologia");
       pools.forEach(pool => {list.push(pool.technology)});
@@ -12,56 +12,56 @@ module.exports = {
          return list.indexOf(elem) == pos;
      });
    return uniqueArray;
-   },
-   pool_add: async (pool) => {
-      var collection = await client.tecnologies();
+   };
+   module.pool_add = async (pool) => {
+      var collection = client.tecnologies();
          let next_pk = await client.getNextSequence("poolid");
          pool.questions = [];
          pool._id = next_pk;
          let response =  await collection.insertOne(pool);
       return response;
-   },
-   poolsAll:async function search(name){
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolsAll = async () => {
+      var CollectionPools = client.tecnologies();
       var pools = await CollectionPools.find({}).toArray();
       return pools;
-   },
-   poolByName: async function search(name){
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolByName = async (name) => {
+      var CollectionPools = client.tecnologies();
       var pools = await CollectionPools.find({'name':name}).toArray();
       return pools;
-   },
-   poolsBytechnology: async function search(technology){
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolsBytechnology = async (technology) => {
+      var CollectionPools =  client.tecnologies();
       var pools = await CollectionPools.find({"technology":technology}).toArray()
       return pools
-   },
-   poolTwoParams: async function search(poolname,technology){
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolTwoParams = async (poolname,technology) =>{
+      var CollectionPools =  client.tecnologies();
       var pool = await CollectionPools.findOne({"technology":technology, "name":poolname});
       return pool;
-   },
-   poolAddQuestion: async function search(poolId, question) {
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolAddQuestion = async (poolId, question) => {
+      var CollectionPools =  client.tecnologies();
       var pool = await CollectionPools.findOne({'_id':poolId});
       pool.questions.push(question);
       return await CollectionPools.updateOne({_id:poolId},
          {$set: {questions: pool.questions}});
-   },
-   poolDeleteQuestion: async function search(poolId, questionId) {
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolDeleteQuestion = async (poolId, questionId) => {
+      var CollectionPools =  client.tecnologies();
       var pool = await CollectionPools.findOne({'_id':poolId});
       pool.questions.splice(pool.questions.findIndex(q => q._id === questionId), 1);
-      //return pool.questions;
       return await CollectionPools.updateOne({'_id':poolId},
          {$set: {questions: pool.questions}});
-   },
-   poolUpdateQuestion: async function search(poolId, question) {
-      var CollectionPools = await client.tecnologies();
+   };
+   module.poolUpdateQuestion = async (poolId, question) => {
+      var CollectionPools = client.tecnologies();
       var pool = await CollectionPools.findOne({'_id':poolId});
       pool.questions.splice(pool.questions.findIndex(q => q._id === question._id), 1);
       pool.questions.push(question);
       return await CollectionPools.updateOne({'_id':poolId},
          {$set: {questions: pool.questions}});
-   }
+   };
+   return module;
 }

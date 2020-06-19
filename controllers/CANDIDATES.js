@@ -1,21 +1,23 @@
-var client = require('../base_de_datos/Cliente');
 const linkedinUriBase = "https://www.linkedin.com/in/"
 const githubUriBase = "https://github.com/";
 
 
-module.exports = {
-    searchOne: async function search(id){
-        var candidates = await client.candidates();
-        var usuario    = await candidates.findOne({"_id":parseInt(id)});
-        this.InsertLinks(usuario);
+module.exports = (db) => {
+    var client = require('../base_de_datos/Cliente')(db),
+        module = {};
+
+    module.searchOne =  async (id) => {
+        var candidates = client.candidates(),
+            usuario    = await candidates.findOne({"_id":parseInt(id)});
+        InsertLinks(usuario);
         return  usuario;
-    },
-    searchAll : async function search(){
-        var candidates_db = await client.candidates(),
-            results_db    = await client.results(),
+    };
+    module.searchAll =  async () =>{
+        var candidates_db =  client.candidates(),
+            results_db    =  client.results(),
             candidates    = await candidates_db.find({}).toArray(),
             results_all   =  await results_db.find({}).toArray();
-            candidates.forEach(value => this.InsertLinks(value));
+            candidates.forEach(value => InsertLinks(value));
 
         for(var i = 0; i < candidates.length; i++){
             var result_cand = results_all.find(x => x.candidate_id == candidates[i]._id);
@@ -31,30 +33,26 @@ module.exports = {
             }
         }
         return candidates;
-    },
-    addCandidate: async function add(candidate){
-        var candidates = await client.candidates();
-
+    };
+    module.addCandidate = async (candidate) => {
+        var candidates = client.candidates();
         delete candidate.finished;
         delete candidate.pending;
-
-        var resultado  = await candidates.insertOne(candidate);
-        return resultado;
-    },
-    deleteCandidate: async function Delete(id) {
-        var candidates = await client.candidates();
-        var resultado  = await candidates.deleteOne({_id: id});
-        return resultado;
-    },
-    updateCandidate: async function Update(candidate){
-        var candidates = await client.candidates();
+        return await candidates.insertOne(candidate);;
+    };
+    module.deleteCandidate = async (id) => {
+        var candidates =  client.candidates();
+        return await candidates.deleteOne({_id: id});;
+    };
+    module.updateCandidate = async (candidate) => {
+        var candidates = client.candidates();
         var resultado           = await candidates.updateOne(
             { _id: candidate.id },
             { $set: candidate }
         );
         return resultado;
-    },
-    InsertLinks: function insert(usuario){
+    };
+    function InsertLinks(usuario){
         if(usuario != null){
             if(usuario.github != "")
                 usuario.github = githubUriBase + usuario.github;
@@ -63,4 +61,5 @@ module.exports = {
         }
         return usuario;
     }
+    return module;
 }

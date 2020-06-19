@@ -1,42 +1,28 @@
-const MongoClient  = require('mongodb').MongoClient;
-const url          = "mongodb+srv://EleazarTracana:5q7f7EFKpyz1GuqC@cluster0-mvhqd.mongodb.net/test?retryWrites=true&w=majority";
-//const url = "mongodb+srv://Colloquium:I37j2cOeQuzuMyyQ@cluster0-zu10c.mongodb.net/test?retryWrites=true&w=majority"
-
-module.exports = {
-    conexion: async function Conectar() {   
-        client = await MongoClient.connect(url, { useUnifiedTopology: true });
-        return client;
+module.exports = function(db) {
+    var module = {};
+    module.counters = () => {
+        return db.collection('COUNTERS');
+    };
+    module.candidates = () => {
+        return db.collection('CANDIDATES');
+    };
+    module.tecnologies = () => { 
+        return db.collection('POOLS');
+    };
+    module.users = () => {
+        return db.collection('USERS');
+    };
+    module.results = () => {
+        return db.collection('RESULTS');
     },
-    counters : async function candidates(){
-        var base   =  await this.conexion() ;
-        return base.db('INTERVIEW').collection('COUNTERS');
+    module.params = () => {
+        return db.collection("PARAMS");
     },
-    candidates : async function candidates(){
-        var base   =  await this.conexion() ;
-        return base.db('INTERVIEW').collection('CANDIDATES');
+    module.permisos = () => {
+        return db.collection("PERMISOS");
     },
-    tecnologies: async function tecnology() {
-        var base   =  await this.conexion();
-        return base.db('INTERVIEW').collection('POOLS');
-    },
-    users: async function tecnology() {
-        var base   =  await this.conexion();
-        return base.db('INTERVIEW').collection('USERS');
-    },
-    results: async function results(){
-        var base   =  await this.conexion();
-        return base.db('INTERVIEW').collection('RESULTS');
-    },
-    params: async function search(){
-        var base = await this.conexion();
-        return base.db('INTERVIEW').collection("PARAMS");
-    },
-    permisos: async function search(){
-        var base = await this.conexion();
-        return base.db('INTERVIEW').collection("PERMISOS");
-    },
-    getNextSequence: async function NextSequence(name){
-        var db =  await this.counters();
+    module.getNextSequence = async (name) => {
+        var db = module.counters();
                   await db.updateOne(
                          { "_id" : name },
                          { $inc: { "seq" : 1 } }
@@ -44,6 +30,7 @@ module.exports = {
         let counter = await db.findOne({'_id':name}); 
             return counter.seq;
     }
+    return module;
 }
 
 

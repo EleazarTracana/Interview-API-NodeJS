@@ -1,9 +1,9 @@
-//Librerias 
-const controller_users    = require('../controllers/USERS');
-const responses           = require('../Modulos/constantes');
-const auth                = require('../base_de_datos/Autenticar');
+const responses           = require('../Modulos/constantes'),
+      auth                = require('../base_de_datos/Autenticar');
  
-module.exports = function(app){
+module.exports = function(app,db){
+
+   const controller_users    = require('../controllers/USERS')(db);
     
   app.get('/user/all',async (req,res) => {
       try{
@@ -14,15 +14,6 @@ module.exports = function(app){
         res.send(responses.invalid);
       }
     });
-   app.get('/admins/check', async(req,res)=>{
-         var users = await controller_users.searchAll();
-         var counter = 0;
-         for(var _user in users){
-            if(_user.rolname.equals("Administrador"))
-               counter++;
-         }
-         return (counter >= 2);
-   })
    app.get('/user/search', async (req,res) =>{
       try{
          await auth.token(req)
@@ -56,6 +47,14 @@ module.exports = function(app){
        console.log(e);
       res.send(e);
      }
+   });
+   app.post('/user/update',async(req,res) => {
+      try{
+         await auth.token(req)
+         var result
+      }catch(e){
+         res.send(responses.invalid)
+      }
    });
    app.delete('/user/delete',async(req,res)=>{
     try{

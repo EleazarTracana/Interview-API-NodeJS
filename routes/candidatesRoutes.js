@@ -1,9 +1,9 @@
-const controller_users    = require('../controllers/CANDIDATES');
-const controllerResult   = require('../controllers/RESULTS');
-const responses          = require('../Modulos/constantes');
-const auth               = require('../base_de_datos/Autenticar');
+const responses          = require('../Modulos/constantes'),
+      auth               = require('../base_de_datos/Autenticar');
  
-module.exports = function(app){
+module.exports = function(app,db){
+   const controller_users   = require('../controllers/CANDIDATES')(db),
+         controllerResult   = require('../controllers/RESULTS')(db);
     
   app.get('/allCandidates',async (req,res) => {
       try{
@@ -11,6 +11,7 @@ module.exports = function(app){
           var users = await controller_users.searchAll()
           res.send(users);
       }catch (e){
+         console.log(e)
         res.send(responses.invalid);
       }
     });
