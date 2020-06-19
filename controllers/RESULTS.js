@@ -38,7 +38,7 @@ module.exports = (db) => {
               {$set: {results: results_cd.results}});
           }
 
-      var next_question  = await get_next_question(pool,pool_db,results_cd.question);
+      var next_question  = await get_next_question(pool,pool_db,results_cd.results);
       return next_question;
     }
     async function get_next_question(pool,pool_db,resultado){  
@@ -132,26 +132,27 @@ module.exports = (db) => {
          }
    return next_value;
   }
+  async function finish_interview(DNI,candidate_db,results_db,pool_name,name_interv){
+    var candidate  =  await candidate_db.findOne({_id:DNI}),
+        cand_result = await results_db.findOne({ "candidate_id" : DNI });
+          await results_db.updateOne({ "candidate_id" : DNI },{$set: {finished: true}});
+
+          var full_score     = 0,
+              question_count = cand_result.results.length;
+              tech     = candidate.technology;
+          cand_result.results.forEach(question => {full_score += question.score});
+
+          var count_total  = (question_count*5),
+              count_result = count_total.toString()+"/"+full_score.toString();
+
+          var model_mail = {
+            technology: tech,
+            pool: pool_name,
+            final_score: count_result,
+            interviewer: name_interv
+          }  
+     return await manage.sendEmail__results(candidate.email,model_mail);
+}
+
   return module;
-  }
-async function finish_interview(DNI,candidate_db,results_db,pool_name,name_interv,old_question){
-      var candidate  =  await candidate_db.findOne({_id:DNI}),
-          cand_result = await results_db.findOne({ "candidate_id" : DNI });
-            await results_db.updateOne({ "candidate_id" : DNI },{$set: {finished: true}});
-
-            var full_score     = 0,
-                question_count = cand_result.results.length;
-                tech     = candidate.technology;
-            cand_result.results.forEach(question => {full_score += question.score});
-
-            var count_total  = (question_count*5),
-                count_result = count_total.toString()+"/"+full_score.toString();
-
-            var model_mail = {
-              technology: tech,
-              pool: pool_name,
-              final_score: count_result,
-              interviewer: name_interv
-            }  
-       return await manage.sendEmail__results(candidate.email,model_mail);
 }
