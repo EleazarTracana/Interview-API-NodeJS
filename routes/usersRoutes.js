@@ -1,9 +1,8 @@
-const responses           = require('../Modulos/constantes'),
-      auth                = require('../base_de_datos/Autenticar');
- 
 module.exports = function(app,db){
 
-   const controller_users    = require('../controllers/USERS')(db);
+   const controller_users    = require('../controllers/USERS')(db),
+         responses           = require('../Modulos/constantes'),
+         auth                = require('../base_de_datos/Autenticar')(db);
     
   app.get('/user/all',async (req,res) => {
       try{

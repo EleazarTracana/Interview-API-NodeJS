@@ -1,8 +1,8 @@
-const auth               = require('../base_de_datos/Autenticar'),
-     constantes         = require('../Modulos/constantes.js');
- 
+
 module.exports = function(app,db){
-  const controller         = require('../controllers/MANAGE.js')(db);
+  const controller         = require('../controllers/MANAGE.js')(db),
+        auth               = require('../base_de_datos/Autenticar')(db),
+        constantes         = require('../Modulos/constantes.js');
     
   app.post('/login', async (req,res)=>{
        var resultado = await auth.validate(req.body.username,req.body.password);

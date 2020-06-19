@@ -1,32 +1,33 @@
 const responses     = require('../Modulos/constantes');
 const jwt           = require('jsonwebtoken');
 const config        = require('../config');
-const client = require('../base_de_datos/Cliente');
 
-module.exports = {
-    createtoken: function create(){
-        var secure = this.Random(0,999999);
+
+module.exports = (db) => {
+  var client = require('../base_de_datos/Cliente')(db),
+      module = {}
+    module.createtoken = () => {
+        var secure = module.Random(0,999999);
         var token  = jwt.sign({Seguridad:secure},config.secret)
         return token;
-    },
-    validate: async function validate(_username,password){ 
-        var users_db = await client.users(),
+    };
+    module.validate = async (_username,password) =>{ 
+        var users_db = client.users();
             user     = await users_db.findOne({username: _username}),
             result;
         if(user == null){
               result = responses.userNotFound
         }else{
            if(user.password == password){
-             user.token = this.createtoken();
+             user.token = module.createtoken();
              result = user;
            }else{
              result = responses.incorrect;
            }
         }
         return result;
-    },
-    token:  async (req) => {
-      try{
+    };
+    module.token = async (req) => {
       var token = req.headers['authorization'];
       if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
@@ -35,11 +36,9 @@ module.exports = {
        resultado = await jwt.verify(token, config.secret)
        return resultado;
       }
-    }catch (e){
-      throw e;
-    }
-    },
-    Random: function random(low, high) {
+    };
+    module.Random = (low, high) => {
         return Math.random() * (high - low) + low
-      }
+    }
+    return module;
 }
