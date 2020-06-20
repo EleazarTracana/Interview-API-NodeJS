@@ -54,12 +54,25 @@ module.exports = function(app,db){
       res.status(403).send(responses.invalid);
      }
    });
+   app.get("/results/all",async(req,res)=>{
+      try{
+         await auth.token(req)
+             var results = await controller_result.get_all_results();
+             res.send(results);
+      }catch(e){
+         res.send(responses.invalid)
+      }
+   });
    app.get("/candidate/results",async(req,res)=>{
       try{
          await auth.token(req)
          var dni = req.query.DNI,
-             results = await controller_result.get_candidate_results(dni);
-             res.send(results);
+             result_candidate = await controller_result.get_candidate_results(dni),
+             full_score     = 0;
+             result_candidate.results.forEach(question => full_score += question.score)
+             result_candidate.full_score = full_score;
+             result_candidate.count = result_candidate.results.length;
+             res.send(result_candidate);
       }catch(e){
          res.send(responses.invalid)
       }

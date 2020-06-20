@@ -12,6 +12,11 @@ module.exports = (db) => {
           candidate_results = await results_db.findOne({"candidate_id": parseInt(dni) });
           return candidate_results;
     };
+    module.get_all_results = async()=>{
+      var results_db = client.results(),
+          results = await results_db.find({}).toArray();
+      return results;
+    }
     module.create_default_results = async (dni,technology) => {
         var results_db = client.results(),
             next_pk = await client.getNextSequence("resultsid"),
