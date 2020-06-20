@@ -66,11 +66,11 @@ module.exports = function(app,db){
    app.post('/candidate/next_question',async(req,res)=>{
       try{
          await auth.token(req)
+         let isContinue = req.body.continuar;
          var candidate = JSON.parse(req.body.candidate),
              question  = (req.body.question != null) ? JSON.parse(req.body.question) : null,
              pool_id   = req.body.pool_id,
-             continuar = req.body.continuar,
-             result  =  await controllerResult.Interview(candidate,question,pool_id,continuar);
+             result  =  await controller_result.Interview(candidate,question,pool_id,isContinue);
          
          res.status(200).send(result)
       }catch(e){

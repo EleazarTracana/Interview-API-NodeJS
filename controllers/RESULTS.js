@@ -17,27 +17,26 @@ module.exports = (db) => {
         let callback =  await results_db.insertOne(candidate_results);
         return callback;
     };
-    module.Interview = async(candidate,question,poolid,continuar) => {
+    module.Interview = async(candidate,question,poolid,continuo) => {
       var results_db =  client.results(),
           pool_db    =  client.tecnologies(),
           results_cd = await results_db.findOne({"candidate_id": candidate._id }),
           pool;
 
-          if(!continuar)
+          if(continuo == false)
                pool = await pool_db.findOne({_id:poolid});
            else
                pool = await pool_db.findOne({name: results_cd.seniority, technology: candidate.technology});
 
         if(results_cd.results.length == 0){
-          await results_db.updateOne({candidate_id:candidate._id},
+           await results_db.updateOne({candidate_id:candidate._id},
             {$set: {seniority: pool.name}});
         }
-        if(!continuar){
-          results_cd.results.push(question);
-          await results_db.updateOne({candidate_id:candidate._id},
-              {$set: {results: results_cd.results}});
-          }
-
+        if(continuo == false){
+          results_cd.results.push(question)
+          await results_db.updateOne({"candidate_id":candidate._id},
+                                         {$addToSet: {results: question }});
+        }
       var next_question  = await get_next_question(pool,pool_db,results_cd.results);
       return next_question;
     }
@@ -95,10 +94,23 @@ module.exports = (db) => {
        }else
          new_pool = pool;
        
-       var filtered_questions = new_pool.questions.filter(e => !resultado.includes(e));
-       next_difficulty = GetNextDifficulty(current_value);
+         var filtered_questions = [];
 
+        for(var e = 0; e < new_pool.questions.length; e++ ){
+          var found = false;
+          for(var i = 0; i < resultado.length; i++){
+            if(resultado[i]._id == new_pool.questions[e]._id){
+              found = true;
+            }
+          }
+          if(found == false){
+            filtered_questions.push(new_pool.questions[e]);
+          }
+        }
+    
+       var next_difficulty = GetNextDifficulty(current_value);
        var next_question = filtered_questions.find(e => e.difficulty == next_difficulty);
+
        if(next_question == null){
          if(filtered_questions.length > 0){
            next_question = filtered_questions[0];

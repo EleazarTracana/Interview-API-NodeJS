@@ -55,12 +55,12 @@ module.exports = (db) => {
     };
     function InsertLinks(usuario){
         if(usuario != null){
-            if(usuario.github != "")
+            if(usuario.github != null )
                 usuario.github = githubUriBase + usuario.github;
-            if(usuario.linkedin != "")
+            if(usuario.linkedin != null)
                 usuario.linkedin = linkedinUriBase + usuario.linkedin;   
-            if(usuario.hackerrank != "")
-            usuario.hackerrank = hackerrankUriBase + usuario.linkedin;
+            if(usuario.hackerrank != null)
+            usuario.hackerrank = hackerrankUriBase + usuario.hackerrank;
         }
         return usuario;
     }

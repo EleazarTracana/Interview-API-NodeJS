@@ -43,7 +43,10 @@ module.exports = (db) => {
    };
    module.poolAddQuestion = async (poolId, question) => {
       var CollectionPools =  client.tecnologies();
-      var pool = await CollectionPools.findOne({'_id':poolId});
+      var pool = await CollectionPools.findOne({'_id':poolId}),
+         next_pk = await client.getNextSequence("poolquestionid");
+      
+      question._id = next_pk;
       pool.questions.push(question);
       return await CollectionPools.updateOne({_id:poolId},
          {$set: {questions: pool.questions}});

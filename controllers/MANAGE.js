@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer"),
-fs = require('fs'),
-qrcode   = require('qrcode');
+fs = require('fs');
+//qrcode   = require('qrcode').
 
 module.exports = (db) => {
     var client = require('../base_de_datos/Cliente.js')(db),
@@ -61,7 +61,7 @@ module.exports = (db) => {
         var params_db = client.params(),
             param_method  = await params_db.findOne({ parameter_name: "QR_METHOD"}),
             full_method   = param_method.parameter_value + DNI,
-            base_64_QR    = await qrcode.toDataURL(full_method);
+            base_64_QR    = ""//await qrcode.toDataURL(full_method);
 
             return base_64_QR;
      };
