@@ -48,7 +48,7 @@ module.exports = (db) => {
     module.updateCandidate = async (candidate) => {
         var candidates = client.candidates();
         var resultado           = await candidates.updateOne(
-            { _id: candidate.id },
+            { _id: candidate._id },
             { $set: candidate }
         );
         return resultado;
