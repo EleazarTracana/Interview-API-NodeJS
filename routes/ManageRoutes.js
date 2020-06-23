@@ -21,12 +21,9 @@ module.exports = function(app,db){
   app.get('/generateQR',async function(req, res){
     let filename = "attachment; filename="+req.query.DNI+".pdf",
         file     = await controller.downloadPDF(req.query.DNI);
-      stream_length(file, {}, function(err, size){
-        res.setHeader('Content-Length', size);
         res.setHeader('Content-Type', 'text/pdf');
         res.setHeader('Content-Disposition', filename);
         file.pipe(res);
-      });
   });
   app.get('/param/google-places-key',async(req,res)=>{
     try{

@@ -1,7 +1,10 @@
+const { table } = require("console");
+
 const nodemailer = require("nodemailer"),
 fs = require('fs'),
 QR_CODE   = require('qrcode'),
-pdf = require('html-pdf');
+pdf = require('html-pdf'),
+table_row = "<div style=\"padding-bottom:0px;height: 21px;font-size:20px;\">CONTENT<span style=\"font-weight:bold;\">.    score: PUNTAJE</span></div>";
 
 module.exports = (db) => {
     var client = require('../base_de_datos/Cliente.js')(db),
@@ -21,7 +24,8 @@ module.exports = (db) => {
               return credentials;
          }
          function read_html_results(model,base_64_QR){
-             var results =  fs.readFileSync('C:/InterviewAPI/templates/resultados.html', 'utf8'),
+             var date =  new Date().toISOString().split('T')[0],
+                 results =  fs.readFileSync('C:/InterviewAPI/templates/resultados.html', 'utf8');
                  results =  results.replace("PH_TECHNOLOGY",model.technology)
                                    .replace("PH_NAME_POOL",model.pool)
                                    .replace("PH_INTERVIEWER",model.interviewer)
@@ -29,7 +33,7 @@ module.exports = (db) => {
                                    .replace("PH_SCORE",model.final_score)
                                    .replace("PH_COUNT_QUESTION",model.count)
                                    .replace("PH_QR_CODE",base_64_QR)
-                                   .replace("PH_DATE", new Date().toDateString())
+                                   .replace("PH_DATE", date)
                                    .replace("PH_BIRTHDATE",model.candidate_age);
                  
                  return results;
@@ -61,7 +65,43 @@ module.exports = (db) => {
         return params;
      };
      module.downloadPDF = async (DNI) =>{
-        var html    = fs.readFileSync('C:/InterviewAPI/templates/credenciales.html', 'utf8');
+        var results_db  = client.results(),
+            candidates_db = client.candidates(),
+            candidate   = await candidates_db.findOne({_id: parseInt(DNI)}),
+            resultados  = await results_db.findOne({candidate_id: parseInt(DNI)}),
+            append      = '',
+            i = 1;
+
+            resultados.results.forEach(question => {
+                let description = i+".  "+question.description;
+                    score       = question.score,
+                    row  = table_row.replace("CONTENT",description)
+                                    .replace("PUNTAJE",score)
+                    append += row;
+                    i++;
+            });
+
+            var full_score     = 0,
+            question_count = resultados.results.length;
+            tech     = candidate.technology;
+            resultados.results.forEach(question => {full_score += question.score});
+
+        var count_total  = (question_count*5),
+            count_result = count_total.toString()+"/"+full_score.toString();
+
+          
+           let  html       = fs.readFileSync('C:/InterviewAPI/templates/resultados_QR.html', 'utf8'),
+                base_64_QR = await module.generate_qrcode(DNI);
+                html = html.replace("PH_RESULTADOS",append)
+                           .replace("PH_CANDIDATE",candidate.name +" "+candidate.surname)
+                           .replace("PH_TECHNOLOGY",tech)
+                           .replace("PH_NAME_POOL",resultados.seniority)
+                           .replace("PH_INTERVIEWER",resultados.interviewer)
+                           .replace("PH_COUNT_QUESTION",question_count)
+                           .replace("PH_SCORE",count_result)
+                           .replace("PH_CODIGO_QR",base_64_QR)
+                           .replace("PH_BIRTHDATE",getAge(candidate.birthday));   
+
         const stream = await new Promise((resolve, reject) => {
                     pdf.create(html).toStream((err, stream) => {resolve(stream)});
           });
@@ -142,3 +182,13 @@ module.exports = (db) => {
      return module;
     
 }
+function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+  }

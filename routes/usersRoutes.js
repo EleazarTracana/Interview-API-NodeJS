@@ -7,11 +7,11 @@ module.exports = function(app,db){
   app.get('/user/all',async (req,res) => {
       try{
           await auth.token(req);
-         // await auth.permissions("user_list",req);
+          await auth.permissions("user_list",req);
           var users = await controller_users.searchAll()
           res.send(users);
       }catch (e){
-        res.send(responses.invalid);
+         res.status(403).send(responses.invalid);
       }
     });
    app.get('/user/search', async (req,res) =>{
@@ -30,6 +30,7 @@ module.exports = function(app,db){
    app.post('/user/add', async (req,res) =>{
     try{
        await auth.token(req)
+       await auth.permissions("user_add",req);
        var result;
        var user = await controller_users.searchOne(req.body.username);
        if(user == null){
@@ -44,19 +45,18 @@ module.exports = function(app,db){
        }
        res.send(result);
     }catch  (e){
-       console.log(e);
-      res.send(e);
+      res.status(403).send(responses.invalid);
      }
    });
    app.post('/user/update',async(req,res) => {
       try{
          await auth.token(req)
+         await auth.permissions("editUser",req);
          var user = JSON.parse(req.body.user)
          await controller_users.user_update(user,req.body.password)
          res.send(responses.user_update);
       }catch(e){
-         console.log(e)
-         res.send(responses.invalid)
+         res.status(403).send(responses.invalid);
       }
    });
    app.delete('/user/delete',async(req,res)=>{

@@ -22,6 +22,7 @@
          }
          table.wrapper {
          width: 100% !important;
+         height: 100% !important;
          table-layout: fixed;
          -webkit-font-smoothing: antialiased;
          -webkit-text-size-adjust: 100%;
@@ -108,13 +109,8 @@
                                  <tbody>
                                     <tr>
                                        <td>
-                                          <!--[if mso]>
-                                          <center>
-                                             <table>
-                                                <tr>
-                                                   <td width="600">
-                                                      <![endif]-->
-                                                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px;" align="center">
+                                    
+                                                      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;" align="center">
                                                          <tbody>
                                                             <tr>
                                                                <td role="modules-container" style="padding:0px 0px 0px 0px; color:#000000; text-align:left;" bgcolor="#FFFFFF" width="100%" align="left">
@@ -131,7 +127,7 @@
                                                                      <tbody>
                                                                         <tr role="module-content">
                                                                            <td height="100%" valign="top">
-                                                                              <table class="column" width="540" style="width:540px; border-spacing:0; border-collapse:collapse; margin:0px 10px 0px 10px;" cellpadding="0" cellspacing="0" align="left" border="0" bgcolor="">
+                                                                              <table class="column" style="border-spacing:0; border-collapse:collapse; margin:0px 10px 0px 10px;" cellpadding="0" cellspacing="0" align="left" border="0" bgcolor="">
                                                                                  <tbody>
                                                                                     <tr>
                                                                                        <td style="padding:0px;margin:0px;border-spacing:0;">
@@ -165,21 +161,29 @@
                                                                                                 <tr>
                                                                                                    <td style="padding:50px 30px 0px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
                                                                                                       <div>
-                                                                                                         <div style="font-family: inherit; text-align: center"><span style="font-size: 28px">Felicidades, haz completado otra entrevista con Colloquium!&nbsp;</span></div>
-                                                                                                         <p style="height: 20px;padding-top: 0px; padding-bottom: 20px;">Datos de la Entrevista:</p>
-                                                                                                      </div>
+                                                                                                         <div style="font-family: inherit; text-align: center"><span style="font-size: 28px">Detalle completo  de la Entrevista de PH_CANDIDATE&nbsp;</span></div>
+                                                                                                         <p style="height: 20px;text-align:center;padding-top: 0px; padding-bottom: 20px;">Datos del candidato</p>
+                                                                                                         <div style="display: inline-block;">
+                                                                                                            <div style="padding-left: 50px;">
+                                                                                                                <div style="padding-bottom:0px;height: 21px;font-size: 20px;">Edad: <span style="font-weight:bold;">PH_BIRTHDATE</span></div>
+                                                                                                                <div style="padding-bottom:0px;height: 21px;font-size: 20px;">Puntaje: <span style="font-weight:bold;">PH_SCORE</span></div>
+                                                                                                                <div style="padding-top:0px;height: 21px;font-size: 20px;">Cantidad de Preguntas: <span style="font-weight: bold;">PH_COUNT_QUESTION</span></div>
+                                                                                                                <div style="padding-top:0px;height: 21px;font-size: 20px;">Seniority: <span style="font-weight: bold;">PH_NAME_POOL</span></div>
+                                                                                                                <div style="padding-top:0px;font-size: 20px;">Entrevistador: <span style="font-weight: bold;">PH_INTERVIEWER</span></div>
+                                                                                                             </div>
+                                                                                                          </div stylestyle="width: 45%;padding-right: 50px;">
+                                                                                                             <img src="PH_CODIGO_QR" width="130" style="float: right;padding-right: 50px;" height="130"/>
+                                                                                                          </div>
+                                                                                                        </div>
+                                                                                                         </div>
                                                                                                    </td>
 																								   
                                                                                                 </tr>
 																								   <tr>
-                                                                                                   <td style="padding:0px 30px 18px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
+                                                                                                   <td style="padding:0px 30px 18px 30px; line-height:36px; text-align:center; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
+                                                                                                    <p style="height: 20px;text-align:center;padding-top: 20px; padding-bottom: 20px;">Preguntas y puntaje</p>
                                                                                                       <div>
-                                                                                                         <div style="padding-bottom:0px;height: 21px;">Nombre: <span style="font-weight:bold;">PH_CANDIDATE_NAME</span></div>
-                                                                                                         <div style="padding-bottom:0px;height: 21px;">Edad: <span style="font-weight:bold;">PH_BIRTHDATE</span></div>
-                                                                                                         <div style="padding-bottom:0px;height: 21px;">Puntaje: <span style="font-weight:bold;">PH_SCORE</span></div>
-                                                                                                         <div style="padding-top:0px;height: 21px">Cantidad de Preguntas: <span style="font-weight: bold;">PH_COUNT_QUESTION</span></div>
-                                                                                                         <div style="padding-top:0px;height: 21px">Fecha de la Entrevista: <span style="font-weight: bold;">PH_DATE</span></div>
-                                                                                                         <div style="padding-top:0px;">Entrevistador: <span style="font-weight: bold;">PH_INTERVIEWER</span></div>
+                                                                                                        PH_RESULTADOS
                                                                                                       </div>
                                                                                                    </td>
 																								   
@@ -202,8 +206,8 @@
                                                                                                       <table border="0" cellpadding="0" cellspacing="0" class="wrapper-mobile" style="text-align:center;">
                                                                                                          <tbody>
                                                                                                             <tr>
-                                                                                                               <td align="center" bgcolor="#de411b" class="inner-td" style="border-radius:6px; font-size:16px; text-align:center; background-color:inherit;">
-                                                                                                                  <p style=" border:3px solid #de411b; border-color:#de411b; border-radius:5px; border-width:3px; color:black; display:inline-block; font-size:12px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 40px 12px 40px; text-align:center; text-decoration:none; border-style:solid; font-family:inherit;font-weight: bold;" >Revisa el detalle en la App</p>
+                                                                                                               <td align="center" bgcolor="#de411b" class="inner-td" style="border-radius:6px; font-size:16px; text-align:center; background-color:inherit;padding-top: 200px;">
+                                                                                                                  <p style=" border:3px solid #de411b; border-color:#de411b; border-radius:5px; border-width:3px; color:black; display:inline-block; font-size:12px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 40px 12px 40px; text-align:center; text-decoration:none; border-style:solid; font-family:inherit;font-weight: bold;" >Confidencial - Colloquium</p>
                                                                                                                </td>
                                                                                                             </tr>
                                                                                                             <tr>

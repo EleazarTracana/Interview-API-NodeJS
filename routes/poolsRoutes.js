@@ -26,6 +26,7 @@ module.exports = function(app,db){
   app.post('/pools/add', async(req,res)=>{
     try{
       await auth.token(req);
+      await auth.permissions("add_pool",req);
       let found  = await controller_pools.poolTwoParams(req.body.name,req.body.technology),
           result = responses.pool_added;
       if(!found)
@@ -34,7 +35,7 @@ module.exports = function(app,db){
         result  = responses.pool_founded;
       res.send(result);
     }catch(e){
-      res.send(responses.invalid);
+      res.status(403).send(responses.invalid);
     }
   });
   app.post('/pools/question/add',async (req,res) => {
