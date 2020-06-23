@@ -12,6 +12,11 @@ module.exports = (db) => {
           candidate_results = await results_db.findOne({"candidate_id": parseInt(dni) });
           return candidate_results;
     };
+    module.delete_results = async (DNI) => {
+      var results_db = client.results(),
+          candidate_results = await results_db.remove({"candidate_id": DNI });
+          return candidate_results;
+    };
     module.get_all_results = async()=>{
       var candidates_db  = client.candidates(),
           results_db = client.results(),

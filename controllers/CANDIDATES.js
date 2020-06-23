@@ -43,7 +43,7 @@ module.exports = (db) => {
     };
     module.deleteCandidate = async (id) => {
         var candidates =  client.candidates();
-        return await candidates.deleteOne({_id: id});;
+        return await candidates.remove({_id: id});;
     };
     module.updateCandidate = async (candidate) => {
         var candidates = client.candidates();

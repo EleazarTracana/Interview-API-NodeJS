@@ -36,12 +36,12 @@ module.exports = function(app,db){
        if(user == null){
           var added = await controller_users.addUser(req.body)
           if(added){
-            result = responses.candidateAdded;
+            result = responses.addUser;
           }else{
             result = responses.genericError;
           }
        }else{
-          result = responses.candidateExist;  
+          result = responses.userExist;  
        }
        res.send(result);
     }catch  (e){
