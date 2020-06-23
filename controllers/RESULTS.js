@@ -192,7 +192,7 @@ module.finish_interview =  async function finish_interview(DNI,name_interviewer,
             interviewer: name_interviewer,
             count: question_count
           }  
-     return await manage.sendEmail__results(user,model_mail);
+     return await manage.sendEmail__results(user.email,model_mail);
 }
 function getAge(dateString) {
   var today = new Date();
