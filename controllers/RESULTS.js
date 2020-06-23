@@ -14,7 +14,7 @@ module.exports = (db) => {
     };
     module.delete_results = async (DNI) => {
       var results_db = client.results(),
-          candidate_results = await results_db.remove({"candidate_id": DNI });
+          candidate_results = await results_db.deleteOne({"candidate_id": DNI });
           return candidate_results;
     };
     module.get_all_results = async()=>{

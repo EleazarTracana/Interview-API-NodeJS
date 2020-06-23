@@ -21,6 +21,7 @@ module.exports = (db) => {
         var users    =  client.users(),
             nextPk   =  await client.getNextSequence("userid");
             user._id =  nextPk;
+
         var resultado  = await users.insertOne(user);
         return resultado;
     };

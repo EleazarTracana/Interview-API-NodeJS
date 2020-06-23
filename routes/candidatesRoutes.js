@@ -103,11 +103,11 @@ module.exports = function(app,db){
          res.send(responses.genericError)
       }
    });
-   app.delete('/candidate/delete',async(req,res)=>{
+   app.get('/candidate/delete',async(req,res)=>{
     try{
       await auth.token(req)
-      await controller_users.deleteCandidate(req.body);
-      await controller_result.delete_results(req.body)
+      await controller_users.deleteCandidate(parseInt(req.query.candidate_id));
+      await controller_result.delete_results(parseInt(req.query.candidate_id))
       res.send(responses.candidateDelete);
    }catch{
       res.status(403).send(responses.invalid);
